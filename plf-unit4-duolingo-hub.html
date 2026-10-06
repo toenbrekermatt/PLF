@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plingua • Unit 4 Conditional Statements</title>
+<style>
+:root{
+  --green:#58cc02; --green-dark:#58a700; --green-shadow:#46a302;
+  --blue:#1cb0f6; --blue-dark:#1899d6; --red:#ff4b4b; --red-dark:#d33131;
+  --yellow:#ffc800; --purple:#ce82ff; --gray:#e5e5e5; --gray-dark:#afafaf;
+  --text:#3c3c3c; --muted:#777; --bg:#fff; --card:#fff;
+}
+*{box-sizing:border-box;font-family:'Nunito',-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{margin:0;background:#fff;color:var(--text)}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap');
+.topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:2px solid var(--gray);display:flex;align-items:center;gap:18px;padding:10px 18px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px;color:var(--green);letter-spacing:.3px}
+.logo-owl{width:40px;height:40px;background:var(--green);border-radius:12px;display:grid;place-items:center;font-size:26px;box-shadow:0 4px 0 var(--green-shadow)}
+.stats{margin-left:auto;display:flex;gap:18px;font-weight:800}
+.stat{display:flex;align-items:center;gap:6px}
+.layout{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:24px;padding:22px 18px 80px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{order:-1}}
+.unit-banner{background:var(--green);color:#fff;border-radius:16px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 0 var(--green-shadow)}
+.unit-banner h2{margin:0;font-size:20px;font-weight:900}
+.unit-banner p{margin:4px 0 0;opacity:.9;font-weight:700;font-size:14px}
+.unit-banner button{background:#fff;color:var(--green);border:0;border-radius:12px;font-weight:900;padding:10px 16px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.path{display:flex;flex-direction:column;align-items:center;margin-top:26px;gap:6px;position:relative}
+.path::before{content:'';position:absolute;top:20px;bottom:20px;width:8px;background:#f0f0f0;border-radius:99px;z-index:0}
+.node{position:relative;z-index:1;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-size:32px;cursor:pointer;border:0;background:#fff;box-shadow:0 6px 0 var(--gray-dark);border:4px solid var(--gray);transition:.15s}
+.node.active{background:var(--green);border-color:var(--green-shadow);color:#fff;box-shadow:0 6px 0 var(--green-shadow);transform:scale(1.08)}
+.node.done{background:var(--yellow);border-color:#e0a800;box-shadow:0 6px 0 #e0a800}
+.node.locked{filter:grayscale(1);opacity:.6;cursor:not-allowed}
+.node-label{background:#fff;border:2px solid var(--gray);border-radius:12px;padding:8px 12px;font-weight:800;margin:6px 0 14px;z-index:1;text-align:center;max-width:280px}
+.node-label small{display:block;color:var(--muted);font-weight:700}
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.card{border:2px solid var(--gray);border-radius:16px;padding:16px;background:var(--card)}
+.card h3{margin:0 0 10px;font-size:16px;font-weight:900}
+.progress{height:14px;background:var(--gray);border-radius:99px;overflow:hidden}
+.progress>div{height:100%;background:var(--green);width:0%;border-radius:99px;transition:.4s}
+.quest{display:flex;justify-content:space-between;font-weight:700;font-size:14px;margin:8px 0}
+.btn{border:0;border-radius:14px;padding:14px 18px;font-weight:900;font-size:15px;letter-spacing:.6px;cursor:pointer;width:100%}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-shadow)}
+.btn-green:active{transform:translateY(4px);box-shadow:0 0 0 var(--green-shadow)}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 4px 0 var(--blue-dark)}
+.btn-outline{background:#fff;color:var(--blue);border:2px solid var(--gray);box-shadow:0 4px 0 var(--gray)}
+.code{background:#1e1e1e;color:#dcdcaa;border-radius:12px;padding:14px;font-family:Consolas,monospace;font-size:14px;white-space:pre-wrap;line-height:1.5;overflow:auto}
+.tag{display:inline-block;background:#ddf4ff;color:#1cb0f6;font-weight:900;font-size:12px;padding:4px 10px;border-radius:99px;margin-bottom:8px}
+.screen{display:none}
+.screen.show{display:block}
+.quiz-top{display:flex;align-items:center;gap:12px;margin:14px 0}
+.hearts{color:var(--red);font-weight:900}
+.opt{border:2px solid var(--gray);border-radius:14px;padding:14px;margin:10px 0;cursor:pointer;font-weight:700;box-shadow:0 4px 0 var(--gray)}
+.opt:hover{background:#f7f7f7}
+.opt.selected{border-color:var(--blue);background:#ddf4ff;box-shadow:0 4px 0 var(--blue-dark)}
+.opt.correct{border-color:var(--green);background:#d7ffb8}
+.opt.wrong{border-color:var(--red);background:#ffdfe0}
+.feedback{position:fixed;bottom:0;left:0;right:0;padding:18px;border-top:2px solid var(--gray);background:#fff;display:none}
+.feedback.show{display:block}
+.feedback.good{background:#d7ffb8}.feedback.bad{background:#ffdfe0}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip{background:#f0f0f0;border-radius:10px;padding:8px 12px;font-weight:800;cursor:pointer;border-bottom:4px solid #ddd}
+.lesson-hero{background:#f7f7f7;border:2px solid var(--gray);border-radius:16px;padding:18px}
+.mascot{font-size:54px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border:2px solid var(--gray);padding:8px;text-align:left}
+th{background:#f7f7f7}
+.footer-note{color:var(--muted);font-size:13px;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo"><div class="logo-owl">🦉</div> Plingua</div>
+  <div class="stats">
+    <div class="stat">🔥 <span id="streak">1</span></div>
+    <div class="stat">💎 <span id="gems">120</span></div>
+    <div class="stat">❤️ <span id="heartsTop">5</span></div>
+    <div class="stat">⚡ <span id="xpTop">0 XP</span></div>
+  </div>
+</div>
+
+<div class="layout">
+<div>
+  <!-- HOME -->
+  <div id="screen-home" class="screen show">
+    <div class="unit-banner">
+      <div><h2>UNIT 4 • Conditional Statements</h2><p>PLF – Program Logic Formulation • Part 1 + Part 2</p></div>
+      <button onclick="scrollPath()">GUIDEBOOK</button>
+    </div>
+    <div class="path" id="path"></div>
+    <p class="footer-note">Complete nodes in order to unlock the Boss Chest. Hearts refill on lesson review.</p>
+  </div>
+
+  <!-- LESSON -->
+  <div id="screen-lesson" class="screen">
+    <button class="btn btn-outline" style="width:auto" onclick="show('screen-home')">← Back to path</button>
+    <div id="lessonContent" style="margin-top:14px"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-blue" onclick="show('screen-home')">LEARN LATER</button>
+      <button class="btn btn-green" id="startQuizBtn">START PRACTICE →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-top">
+      <span onclick="show('screen-home')" style="cursor:pointer;font-weight:900">✕</span>
+      <div class="progress" style="flex:1"><div id="quizBar"></div></div>
+      <div class="hearts">❤️ <span id="heartsQuiz">5</span></div>
+    </div>
+    <div id="quizBox"></div>
+    <div style="margin-top:18px"><button class="btn btn-green" id="checkBtn" onclick="checkAnswer()">CHECK</button></div>
+  </div>
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<div class="sidebar">
+  <div class="card"><h3>Daily Quests</h3>
+    <div class="quest"><span>Earn 50 XP</span><span id="q1">0 / 50</span></div>
+    <div class="progress"><div id="q1bar"></div></div>
+    <div class="quest"><span>Finish 3 lessons</span><span id="q2">0 / 3</span></div>
+    <div class="progress"><div id="q2bar"></div></div>
+  </div>
+  <div class="card"><h3>📘 Unit 4 Guidebook</h3>
+    <p style="font-size:14px;color:var(--muted)">if • if-else • AND • OR • switch • Boolean expressions • flowcharts + pseudocode</p>
+    <button class="btn btn-blue" onclick="openLesson(0)">REVIEW NOTES</button>
+  </div>
+</div>
+</div>
+
+<script>
+const LESSONS=[
+{icon:"🔰",title:"Boolean & Selection",sub:"Every decision = Boolean expression",color:"#1cb0f6",
+body:`<span class="tag">LESSON 1 • CONCEPT</span><h2>Boolean Expression + Selection Structure</h2>
+<div class="lesson-hero"><span class="mascot">🦉</span><p><b>Every decision a computer makes involves evaluating a Boolean expression.</b> A Boolean expression controls every selection structure.</p></div>
+<p>The <b>if-then-else selection</b>: logic flows to only ONE of two alternatives, never both.</p>
+<div class="code">if condition then
+  statements when TRUE
+else
+  statements when FALSE
+endif</div>
+<table><tr><th>Term</th><th>Meaning</th></tr>
+<tr><td><b>if</b></td><td>starts statement, tests Boolean (x&gt;y)</td></tr>
+<tr><td><b>else</b></td><td>runs if condition is FALSE (optional)</td></tr>
+<tr><td><b>endif</b></td><td>ends structure</td></tr>
+<tr><td><b>then</b></td><td>clarity word (not in all languages)</td></tr></table>
+<p>Condition can be comparison, Boolean variable, or method returning Boolean.</p>`},
+{icon:"🌡️",title:"if Statement",sub:"Sometimes execute, sometimes skip",color:"#58cc02",
+body:`<span class="tag">LESSON 2 • IF</span><h2>The if Statement</h2>
+<div class="code">if (boolean_expression) then
+  statement
+endif</div>
+<p>If TRUE → execute. If FALSE → skip. Expression in () must evaluate to true/false.</p>
+<h3>Example 1 – Positive check</h3><div class="code">Start
+Declarations num x
+Input x
+if (x > 0) then
+  Output "The number is positive"
+endif
+Stop</div>
+<h3>Example 2 – Rent a car</h3><div class="code">Start
+Declarations num age
+Input age
+if (age >= 26) then
+  Output "You may rent a car"
+endif
+Stop</div>`},
+{icon:"⚖️",title:"if-else Statement",sub:"Choose between 2 alternatives",color:"#ce82ff",
+body:`<span class="tag">LESSON 3 • IF-ELSE</span><h2>The if-else Statement</h2>
+<div class="code">if (boolean_expression)
+  statement1
+else
+  statement2
+endif</div>
+<h3>Snow or Rain?</h3><div class="code">Declarations double temperature
+Input temperature
+if (temperature <= 32.0) then
+  forecast = "SNOW"
+else
+  forecast = "RAIN"
+endif</div>
+<h3>Average guard</h3><div class="code">Input count, total
+if (count > 0) then
+  average = total / count
+else
+  Output "No data to average."
+endif</div>
+<h3>Seatwork classics</h3><div class="code">Input Q1,Q2,Q3,Q4
+GRADE = (Q1+Q2+Q3+Q4)/4
+if GRADE < 60 then Output "FAIL"
+else Output "PASS"</div>
+<div class="code">Input N
+Remainder = N modulo 2
+if Remainder == 0 then Output "EVEN"
+else Output "ODD"</div>
+<p><b>Relational tip:</b> <span class="code" style="display:inline">if customerAge >=65 then discount=0.10 else discount=0</span> equals <span class="code" style="display:inline">if customerAge &lt;65 then discount=0 else discount=0.10</span></p>`},
+{icon:"🤝",title:"AND Logic",sub:"Both must be true",color:"#ff9600",
+body:`<span class="tag">LESSON 4 • AND</span><h2>Using AND Logic</h2>
+<p>Extra billing only if <b>both</b> criteria true:</p><div class="code">if callsMade > 100 AND callMinutes > 500 then
+  customerBill = customerBill + PREMIUM
+endif</div>
+<h3>Discount example</h3><div class="code">MIN_AGE=12; MAX_AGE=65
+FULL_PRICE=8.50; DISCOUNTED=6.00
+if patronAge > MIN_AGE AND patronAge < MAX_AGE then
+  price = FULL_PRICE
+else
+  price = DISCOUNTED_PRICE
+endif</div>
+<p>Under 13 or over 64 → discounted. Ages 13-64 → full price.</p>
+<p>Nested version = same as AND:</p><div class="code">if callsMade > CALLS then
+  if callMinutes > MINUTES then
+    customerBill = customerBill + PREMIUM
+  endif
+endif</div>`},
+{icon:"🔀",title:"OR Logic",sub:"One or both = true",color:"#1cb0f6",
+body:`<span class="tag">LESSON 5 • OR</span><h2>Using OR Logic</h2>
+<div class="code">if callsMade > CALLS OR textsSent > TEXTS then
+  customerBill = customerBill + PREMIUM
+endif</div>
+<p>Equivalent nested else-if:</p><div class="code">if callsMade > CALLS then
+  customerBill = customerBill + PREMIUM
+else
+  if textsSent > TEXTS then
+    customerBill = customerBill + PREMIUM
+  endif
+endif</div>
+<p><b>Memory trick:</b> AND = strict bouncer (both IDs). OR = chill bouncer (one ID enough).</p>`},
+{icon:"🎰",title:"switch Case",sub:"Many constants, one variable",color:"#ff4b4b",
+body:`<span class="tag">LESSON 6 • SWITCH</span><h2>Switch Case Statement</h2>
+<p>Use switch when if/else compares int/char vs several constants.</p><div class="code">switch (suitAsChar) {
+ case 'C': suitAsName="Clubs"; break;
+ case 'D': suitAsName="Diamonds"; break;
+ case 'H': suitAsName="Hearts"; break;
+ case 'S': suitAsName="Spades"; break;
+ default: suitAsName="Unknown";
+}</div>
+<h3>Discount code</h3><div class="code">code='B'
+switch(code){
+ case 'A': discount=0.0; break;
+ case 'B': discount=0.1; break;
+ case 'C': discount=0.2; break;
+ default: discount=0.3;
+}
+Output discount</div>
+<p>⚠️ Don't forget <b>break;</b> or it falls through!</p>`},
+{icon:"👑",title:"Boss Challenge",sub:"Mixed Unit 4 Final",color:"#ffc800",
+body:`<span class="tag">FINAL • BOSS</span><h2>Selection Structures Mastery</h2>
+<p><b>1. Larger of two:</b></p><div class="code">Input x,y
+if x==y then Output "numbers are equal"
+else if x&lt;y then Output "second is greater"
+else Output "first is greater"</div>
+<p><b>2. Sum of two equals third?</b> Check x+y==z, x+z==y, y+z==x</p>
+<p><b>3. Assignment – Average only if all ≥75:</b></p><div class="code">Input Eng,Math,Sci
+if Eng>=75 AND Math>=75 AND Sci>=75 then
+  avg=(Eng+Math+Sci)/3; Output avg
+else
+  Output "We cannot proceed on computation"
+endif</div>
+<p><b>4. Remainder switch:</b> r = x % y → case 0,1,2, default "greater than 2"</p>`}
+];
+
+const QUIZZES=[
+[{t:"mc",q:"What controls every selection structure?",opts:["Boolean expression","Loop counter","Array index","Compiler version"],a:0},
+{t:"mc",q:"if-then-else flows to…",opts:["Both branches","Only one alternative, never both","Random branch","No branch"],a:1},
+{t:"tf",q:"An else clause is required in every if statement.",opts:["True","False"],a:1},
+{t:"mc",q:"endif keyword does what?",opts:["Ends the structure","Starts loop","Declares variable","Outputs result"],a:0}],
+[{t:"mc",q:"if (x > 0) then Output positive. x = -5 → ?",opts:["Outputs positive","Skips output","Error","Outputs negative"],a:1},
+{t:"mc",q:"You may rent a car if age >= 26. Age 26 → ?",opts:["Rent allowed","Rent denied","Ask again","Skip"],a:0},
+{t:"order",q:"Order the if pseudocode:",items:["if (age>=26) then",'Output "rent"',"endif"],a:["if (age>=26) then",'Output "rent"',"endif"]},
+{t:"mc",q:"Boolean expression must evaluate to…",opts:["true or false","positive number","string","null"],a:0}],
+[{t:"mc",q:"temperature 20 → forecast?",opts:["SNOW","RAIN","SUNNY","CLOUDY"],a:0,explain:"20 <=32 so SNOW"},
+{t:"mc",q:"count=0, total=100 → ?",opts:['average computed','"No data to average."',"divide by zero crash output","average=0"],a:1},
+{t:"mc",q:"GRADE=(80+70+60+50)/4=65 → ?",opts:["PASS","FAIL"],a:0},
+{t:"mc",q:"N=7, N%2=1 → ?",opts:["EVEN","ODD"],a:1}],
+[{t:"mc",q:"calls=120, minutes=600 → premium?",opts:["Yes, both > limits","No","Only if OR","Error"],a:0},
+{t:"mc",q:"patronAge=10, MIN 12 MAX 65 → price?",opts:["FULL 8.50","DISCOUNTED 6.00"],a:1},
+{t:"mc",q:"patronAge=30 → price?",opts:["FULL 8.50","DISCOUNTED 6.00"],a:0},
+{t:"tf",q:"AND needs both conditions true.",opts:["True","False"],a:0}],
+[{t:"mc",q:"calls=10, texts=500 (TEXTS=100) with OR → premium?",opts:["Yes","No"],a:0},
+{t:"tf",q:"OR needs both criteria true.",opts:["True","False"],a:1},
+{t:"mc",q:"Best use of OR?",opts:["Meet one or both criteria","Meet both strictly","Loop 10 times","Declare variable"],a:0}],
+[{t:"mc",q:"suit='H' → ?",opts:["Hearts","Clubs","Spades","Unknown"],a:0},
+{t:"mc",q:"code='C' discount?",opts:["0.0","0.1","0.2","0.3"],a:2},
+{t:"mc",q:"code='Z' discount?",opts:["0.0","0.1","0.2","0.3 (default)"],a:3},
+{t:"mc",q:"Missing break causes…",opts:["Fall-through","Syntax highlight","Auto fix","Loop"],a:0}],
+[{t:"mc",q:"x=5,y=5 → ?",opts:["equal","second greater","first greater"],a:0},
+{t:"mc",q:"Eng=80,Math=70,Sci=90 → ?",opts:["Compute average","Cannot proceed"],a:1},
+{t:"mc",q:"x=10,y=3, r=1 → switch outputs?",opts:['"remainder is 0"','"remainder is 1"','"remainder is 2"','"greater than 2"'],a:1},
+{t:"mc",q:"x=7,y=2,z=5 → which true?",opts:["y+z==x","x+y==z","x+z==y","none"],a:0}]
+];
+
+let state={xp:0,gems:120,hearts:5,streak:1,done:new Set(),lessonsDone:0,current:0,qi:0,score:0,selected:null,orderSel:[]};
+try{const s=JSON.parse(localStorage.getItem('plingua')||'{}');Object.assign(state,s,{done:new Set(s.done||[])})}catch(e){}
+function save(){localStorage.setItem('plingua',JSON.stringify({...state,done:[...state.done]}))}
+function updateTop(){
+  document.getElementById('xpTop').textContent=state.xp+' XP';
+  document.getElementById('gems').textContent=state.gems;
+  document.getElementById('streak').textContent=state.streak;
+  document.getElementById('heartsTop').textContent=state.hearts;
+  document.getElementById('heartsQuiz').textContent=state.hearts;
+  document.getElementById('q1').textContent=Math.min(state.xp,50)+' / 50';
+  document.getElementById('q1bar').style.width=Math.min(state.xp/50*100,100)+'%';
+  document.getElementById('q2').textContent=Math.min(state.lessonsDone,3)+' / 3';
+  document.getElementById('q2bar').style.width=Math.min(state.lessonsDone/3*100,100)+'%';
+}
+function renderPath(){
+  const p=document.getElementById('path');p.innerHTML='';
+  LESSONS.forEach((L,i)=>{
+    const b=document.createElement('button');
+    const locked=i>0 && !state.done.has(i-1);
+    b.className='node '+(state.done.has(i)?'done':locked?'locked':'active');
+    b.textContent=locked?'🔒':L.icon;
+    b.style.marginLeft=(i%2===0?'0':i%3===0?'90px':'-90px');
+    if(!locked)b.onclick=()=>openLesson(i);
+    p.appendChild(b);
+    const lab=document.createElement('div');lab.className='node-label';
+    lab.innerHTML=`${L.title}<small>${L.sub}</small>`;
+    p.appendChild(lab);
+  });
+}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
+function scrollPath(){document.getElementById('path').scrollIntoView({behavior:'smooth'})}
+function openLesson(i){
+  state.current=i;
+  document.getElementById('lessonContent').innerHTML=`<div class="card"><div style="font-size:44px">${LESSONS[i].icon}</div>${LESSONS[i].body}</div>`;
+  document.getElementById('startQuizBtn').onclick=()=>startQuiz(i);
+  show('screen-lesson');
+}
+function startQuiz(i){
+  state.current=i;state.qi=0;state.score=0;state.selected=null;state.orderSel=[];
+  show('screen-quiz');renderQ();
+}
+function renderQ(){
+  const qs=QUIZZES[state.current];const q=qs[state.qi];
+  document.getElementById('quizBar').style.width=(state.qi/qs.length*100)+'%';
+  const box=document.getElementById('quizBox');state.selected=null;
+  let html=`<span class="tag">${LESSONS[state.current].title.toUpperCase()} • Q${state.qi+1}/${qs.length}</span><h2>${q.q}</h2>`;
+  if(q.t==='mc'||q.t==='tf'){
+    html+=q.opts.map((o,idx)=>`<div class="opt" onclick="pick(${idx},this)">${o}</div>`).join('');
+  }else if(q.t==='order'){
+    html+=`<p style="color:var(--muted)">Tap in correct order:</p><div class="flow" id="pool">`+q.items.map((it,idx)=>`<div class="chip" onclick="pickOrder('${it.replace(/'/g,"\\'")}',this)">${it}</div>`).join('')+`</div><div class="code" id="orderAns">_ _ _</div>`;
+    state.orderSel=[];
+  }
+  if(q.explain)html+=`<p style="color:var(--muted);font-size:13px">Hint hidden until check</p>`;
+  box.innerHTML=html;
+  document.getElementById('feedback').classList.remove('show');
+  document.getElementById('checkBtn').textContent=(state.qi===qs.length-1?'FINISH':'CHECK');
+}
+function pick(i,el){
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');state.selected=i;
+}
+function pickOrder(txt,el){
+  state.orderSel.push(txt);el.style.display='none';
+  document.getElementById('orderAns').textContent=state.orderSel.join(' → ');
+}
+function checkAnswer(){
+  const qs=QUIZZES[state.current];const q=qs[state.qi];
+  let correct=false;
+  if(q.t==='order'){correct=JSON.stringify(state.orderSel)===JSON.stringify(q.a)}
+  else{correct=state.selected===q.a}
+  const fb=document.getElementById('feedback');
+  if(correct){state.score++;state.xp+=10;fb.className='feedback show good';fb.innerHTML=`<b>🎉 Correct! +10 XP</b> ${q.explain||''} <button class="btn btn-green" style="margin-top:10px" onclick="nextQ()">CONTINUE</button>`}
+  else{
+    state.hearts=Math.max(0,state.hearts-1);
+    fb.className='feedback show bad';fb.innerHTML=`<b>💔 Correct: ${q.t==='order'?q.a.join(' → '):q.opts[q.a]}</b> ${q.explain||''} <button class="btn btn-red btn-green" style="margin-top:10px;background:var(--red);box-shadow:0 4px 0 var(--red-dark);color:#fff" onclick="nextQ()">CONTINUE</button>`;
+  }
+  updateTop();save();
+}
+function nextQ(){
+  const qs=QUIZZES[state.current];
+  document.getElementById('feedback').classList.remove('show');
+  if(state.hearts<=0){alert('Out of hearts! Review a lesson to refill.');state.hearts=5;updateTop();show('screen-home');return}
+  if(state.qi<qs.length-1){state.qi++;renderQ()}
+  else{finishQuiz()}
+}
+function finishQuiz(){
+  document.getElementById('quizBar').style.width='100%';
+  const passed=state.score>=Math.ceil(QUIZZES[state.current].length*0.6);
+  if(passed && !state.done.has(state.current)){state.done.add(state.current);state.lessonsDone++;state.gems+=20;state.streak++}
+  if(passed)state.hearts=Math.min(5,state.hearts+1);
+  updateTop();save();renderPath();
+  document.getElementById('quizBox').innerHTML=`<div class="card" style="text-align:center"><div style="font-size:64px">${passed?'🏆':'😅'}</div><h2>${passed?'Lesson Complete!':'Keep practicing!'}</h2><p>Score ${state.score}/${QUIZZES[state.current].length} • +${state.score*10} XP ${passed?'+20 💎':''}</p><button class="btn btn-green" onclick="show('screen-home')">BACK TO PATH</button><div style="height:10px"></div><button class="btn btn-outline" onclick="startQuiz(${state.current})">RETRY</button></div>`;
+  document.getElementById('checkBtn').textContent='CHECK';
+  document.getElementById('checkBtn').onclick=()=>show('screen-home');
+  document.getElementById('checkBtn').style.display='none';
+  setTimeout(()=>{document.getElementById('checkBtn').style.display='block';document.getElementById('checkBtn').textContent='CONTINUE';document.getElementById('checkBtn').onclick=()=>show('screen-home')},50);
+}
+renderPath();updateTop();
+</script>
+</body>
+</html>
