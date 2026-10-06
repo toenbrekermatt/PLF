@@ -49,11 +49,17 @@ body{margin:0;background:#fff;color:var(--text)}
 .feedback.show{display:block}.feedback.good{background:#d7ffb8}.feedback.bad{background:#ffdfe0}
 .flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .chip{background:#f0f0f0;border-radius:10px;padding:8px 12px;font-weight:800;cursor:pointer;border-bottom:4px solid #ddd}
-/* slides */
+/* slides - HUM doc style */
 .slide-card{border:2px solid var(--gray);border-radius:18px;padding:22px;background:#fff;min-height:340px}
-.slide-owl{display:flex;gap:12px;align-items:flex-start;margin:12px 0}
-.slide-owl .face{font-size:48px}
-.speech{border:2px solid var(--gray);border-radius:14px;padding:12px 14px;font-weight:700;background:#f7f7f7;flex:1}
+.unit-kicker{font-size:12px;font-weight:900;letter-spacing:.6px;color:var(--muted);margin:8px 0 2px}
+.slide-meta{font-size:13px;font-weight:800;color:var(--muted);margin-bottom:8px}
+.slide-title-row{display:flex;gap:12px;align-items:center;margin:6px 0 14px}
+.slide-icon{width:56px;height:56px;border-radius:14px;background:#d7ffb8;display:grid;place-items:center;font-size:32px;flex-shrink:0}
+.slide-title{font-size:22px;font-weight:900;line-height:1.2;margin:0}
+.doc-card{border:2px solid var(--gray);border-radius:16px;padding:20px;background:#fff}
+.doc-card p{line-height:1.6;margin:0 0 14px;font-size:15px}
+.check-row{display:flex;gap:10px;margin:12px 0;line-height:1.6;font-size:15px}
+.check-badge{width:22px;height:22px;border-radius:7px;background:#d7ffb8;color:var(--green);display:grid;place-items:center;font-weight:900;flex-shrink:0;margin-top:2px}
 .slide-dots{display:flex;gap:6px;justify-content:center;margin:12px 0}
 .dot{width:8px;height:8px;border-radius:99px;background:var(--gray)}
 .dot.on{background:var(--green);width:24px}
@@ -71,8 +77,10 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:2px solid 
 <div class="path" id="path"></div>
 <p class="footer-note">Complete nodes in order to unlock the Boss Chest.</p></div>
 <div id="screen-lesson" class="screen">
-<div class="lesson-top"><span onclick="show('screen-home')" style="cursor:pointer;font-weight:900;font-size:20px">✕</span><div class="lesson-progress"><div id="lessonBar"></div></div><b id="lessonCount" style="font-size:13px;color:var(--muted)"></b></div>
-<div id="lessonContent" class="slide-card"></div>
+<div class="lesson-top"><span onclick="show('screen-home')" style="cursor:pointer;font-weight:900;font-size:20px;color:var(--gray-dark)">✕</span><div class="lesson-progress"><div id="lessonBar"></div></div><b id="lessonCount" style="font-size:13px;color:var(--muted);white-space:nowrap"></b><span style="font-weight:900;font-size:13px;color:#1cb0f6;white-space:nowrap">⭐ <span id="xpLesson">0</span></span><span style="font-weight:900;font-size:13px;white-space:nowrap">🔥 <span id="streakLesson">1</span></span></div>
+<div class="unit-kicker">UNIT 4 • LESSONS (slides only, full text)</div>
+<div class="slide-meta" id="slideMeta"></div>
+<div id="lessonContent"></div>
 <div class="slide-dots" id="slideDots"></div>
 <div class="lesson-actions"><button class="btn btn-outline" onclick="slideNav(-1)">BACK</button><button class="btn btn-green" id="slideNext" onclick="slideNav(1)">CONTINUE</button></div>
 <div style="margin-top:10px"><button class="btn btn-blue" id="startQuizBtn">START PRACTICE →</button></div>
@@ -154,12 +162,14 @@ const QUIZZES=[
 let state={xp:0,gems:120,hearts:5,streak:1,done:new Set(),lessonsDone:0,current:0,slide:0,qi:0,score:0,selected:null,orderSel:[]};
 try{const s=JSON.parse(localStorage.getItem('plingua')||'{}');Object.assign(state,s,{done:new Set(s.done||[]),slide:0})}catch(e){}
 function save(){localStorage.setItem('plingua',JSON.stringify({...state,done:[...state.done]}))}
-function updateTop(){document.getElementById('xpTop').textContent=state.xp+' XP';document.getElementById('gems').textContent=state.gems;document.getElementById('streak').textContent=state.streak;document.getElementById('heartsTop').textContent=state.hearts;document.getElementById('heartsQuiz').textContent=state.hearts;document.getElementById('q1').textContent=Math.min(state.xp,50)+' / 50';document.getElementById('q1bar').style.width=Math.min(state.xp/50*100,100)+'%';document.getElementById('q2').textContent=Math.min(state.lessonsDone,3)+' / 3';document.getElementById('q2bar').style.width=Math.min(state.lessonsDone/3*100,100)+'%';}
+function updateTop(){document.getElementById('xpTop').textContent=state.xp+' XP';document.getElementById('gems').textContent=state.gems;document.getElementById('streak').textContent=state.streak;document.getElementById('heartsTop').textContent=state.hearts;document.getElementById('heartsQuiz').textContent=state.hearts;const xl=document.getElementById('xpLesson');if(xl)xl.textContent=state.xp;const sl=document.getElementById('streakLesson');if(sl)sl.textContent=state.streak;document.getElementById('q1').textContent=Math.min(state.xp,50)+' / 50';document.getElementById('q1bar').style.width=Math.min(state.xp/50*100,100)+'%';document.getElementById('q2').textContent=Math.min(state.lessonsDone,3)+' / 3';document.getElementById('q2bar').style.width=Math.min(state.lessonsDone/3*100,100)+'%';}
+function totalSlides(){return LESSONS.reduce((n,L)=>n+L.slides.length,0)}
+function globalSlideIdx(){let n=0;for(let i=0;i<state.current;i++)n+=LESSONS[i].slides.length;return n+state.slide+1}
 function renderPath(){const p=document.getElementById('path');p.innerHTML='';LESSONS.forEach((L,i)=>{const b=document.createElement('button');const locked=i>0&&!state.done.has(i-1);b.className='node '+(state.done.has(i)?'done':locked?'locked':'active');b.textContent=locked?'🔒':L.icon;b.style.marginLeft=(i%2===0?'0':i%3===0?'90px':'-90px');if(!locked)b.onclick=()=>openLesson(i);p.appendChild(b);const lab=document.createElement('div');lab.className='node-label';lab.innerHTML=`${L.title}<small>${L.sub}</small>`;p.appendChild(lab);});}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));document.getElementById(id).classList.add('show');document.getElementById('layout').classList.toggle('focus-mode',id!=='screen-home');window.scrollTo(0,0)}
 function scrollPath(){document.getElementById('path').scrollIntoView({behavior:'smooth'})}
 function openLesson(i){state.current=i;state.slide=0;show('screen-lesson');renderSlide();document.getElementById('startQuizBtn').onclick=()=>startQuiz(i);}
-function renderSlide(){const L=LESSONS[state.current];const s=L.slides[state.slide];document.getElementById('lessonBar').style.width=((state.slide+1)/L.slides.length*100)+'%';document.getElementById('lessonCount').textContent=(state.slide+1)+' / '+L.slides.length;document.getElementById('slideDots').innerHTML=L.slides.map((_,idx)=>`<div class="dot ${idx===state.slide?'on':''}"></div>`).join('');document.getElementById('lessonContent').innerHTML=`<span class="tag">${s.tag}</span><h2 style="margin:6px 0">${s.h}</h2><div class="slide-owl"><div class="face">🦉</div><div class="speech">${s.owl}</div></div><p>${s.text}</p>${s.code?`<div class="code">${s.code}</div>`:''}`;document.getElementById('slideNext').textContent=state.slide===L.slides.length-1?'FINISH ✓':'CONTINUE';document.getElementById('startQuizBtn').style.display=state.slide===L.slides.length-1?'block':'none';}
+function renderSlide(){const L=LESSONS[state.current];const s=L.slides[state.slide];const g=globalSlideIdx(),t=totalSlides();document.getElementById('lessonBar').style.width=(g/t*100)+'%';document.getElementById('lessonCount').textContent=g+' / '+t;document.getElementById('slideMeta').textContent=`Unit 4 • SLIDE ${g} OF ${t}`;document.getElementById('slideDots').innerHTML=L.slides.map((_,idx)=>`<div class="dot ${idx===state.slide?'on':''}"></div>`).join('');document.getElementById('lessonContent').innerHTML=`<div class="slide-title-row"><div class="slide-icon">${L.icon}</div><h1 class="slide-title">UNIT 4: CONDITIONAL STATEMENTS<br>— ${s.h}</h1></div><div class="doc-card"><p>${s.owl} ${s.text}</p>${s.code?`<div class="code">${s.code}</div>`:''}<div class="check-row"><div class="check-badge">✓</div><div><b>${s.h}</b> — ${s.text}</div></div></div>`;document.getElementById('slideNext').textContent=state.slide===L.slides.length-1?'FINISH ✓':'CONTINUE';document.getElementById('startQuizBtn').style.display=state.slide===L.slides.length-1?'block':'none';updateTop();}
 function slideNav(d){const L=LESSONS[state.current];const ns=state.slide+d;if(ns<0){show('screen-home');return}if(ns>=L.slides.length){startQuiz(state.current);return}state.slide=ns;renderSlide();}
 function startQuiz(i){state.current=i;state.qi=0;state.score=0;state.selected=null;state.orderSel=[];show('screen-quiz');renderQ();}
 function renderQ(){const qs=QUIZZES[state.current];const q=qs[state.qi];document.getElementById('quizBar').style.width=(state.qi/qs.length*100)+'%';const box=document.getElementById('quizBox');state.selected=null;let html=`<span class="tag">${LESSONS[state.current].title.toUpperCase()} • Q${state.qi+1}/${qs.length}</span><h2>${q.q}</h2>`;if(q.t==='mc'||q.t==='tf'){html+=q.opts.map((o,idx)=>`<div class="opt" onclick="pick(${idx},this)">${o}</div>`).join('');}else if(q.t==='order'){html+=`<p style="color:var(--muted)">Tap in correct order:</p><div class="flow" id="pool">`+q.items.map((it)=>`<div class="chip" onclick="pickOrder('${it.replace(/'/g,"\\'")}',this)">${it}</div>`).join('')+`</div><div class="code" id="orderAns">_ _ _</div>`;state.orderSel=[];}box.innerHTML=html;document.getElementById('feedback').classList.remove('show');document.getElementById('checkBtn').textContent=(state.qi===qs.length-1?'FINISH':'CHECK');}
