@@ -302,16 +302,16 @@ function flowSVG(f){
    if(r.nx)nexits.push(dy);
    if(hasN){
     const mY=Math.max(yy,ny)+GAP;
-    if(hasY&&!r.ey)ln(CX,yy,CX,mY);
-    if(!hasY)ln(CX,yy,CX,mY);
+    if(hasY&&!r.ey)ln(CX,yy,CX,mY,false);
+    if(!hasY)ln(CX,yy,CX,mY,false);
     ln(LANE,ny,LANE,mY,false);ln(LANE,mY,CX,mY);dot(CX,mY);
     y=mY;
    }else if(r.nx||r.ey){
     if(!hasY){y=yy}
-    else{const mY2=yy+GAP;ln(CX,yy,CX,mY2);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);dot(CX,mY2);y=mY2}
+    else{const mY2=yy+GAP;ln(CX,yy,CX,mY2,false);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);dot(CX,mY2);y=mY2}
     if(!hasY&&r.ey){y=yy}
    }else{
-    if(hasY){const mY2=yy+GAP;ln(CX,yy,CX,mY2);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);dot(CX,mY2);y=mY2}
+    if(hasY){const mY2=yy+GAP;ln(CX,yy,CX,mY2,false);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);dot(CX,mY2);y=mY2}
     else y=yy;
    }
   }
