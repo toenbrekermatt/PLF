@@ -103,6 +103,16 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:2px solid 
 .unit-tab{flex:1;border:0;border-radius:10px;padding:10px;font-weight:900;cursor:pointer;background:#eee}
 .unit-tab.on{background:var(--green);color:#fff}
 .unit-tab:disabled{opacity:.5;cursor:not-allowed}
+.flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:600px){.flow-grid{grid-template-columns:1fr}}
+.flow-thumb{border:2px solid var(--gray);border-radius:14px;padding:10px;background:#fff;cursor:pointer;text-align:left}
+.flow-thumb img{width:100%;border-radius:8px;background:#fff}
+.flow-thumb b{display:block;font-size:13px;margin-top:8px}
+.flow-thumb span{font-size:12px;color:var(--muted);font-weight:700}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;place-items:center;z-index:100;padding:18px}
+.lightbox.show{display:grid}
+.lightbox-inner{background:#fff;border-radius:16px;padding:16px;max-width:640px;width:100%;max-height:90vh;overflow:auto;text-align:center}
+.lightbox-inner img{width:100%;border-radius:10px}
 </style>
 </head>
 <body>
@@ -120,6 +130,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:2px solid 
 <button class="menu-card" onclick="startHomeQuiz()"><div class="menu-ico">💪</div><div><b>PRACTICE QUIZ</b><br><span>Choose a unit quiz to take.</span></div></button>
 <button class="menu-card" onclick="startLongQuiz()"><div class="menu-ico">🏋️</div><div><b>LONG QUIZ</b><br><span>Test everything at once.</span></div></button>
 <button class="menu-card" onclick="openLesson(6)"><div class="menu-ico">👑</div><div><b>BOSS TEST</b><br><span>Check what you already know.</span></div></button>
+<button class="menu-card" onclick="showDiagrams()"><div class="menu-ico">📊</div><div><b>FLOWCHARTS</b><br><span>All diagrams from the decks.</span></div></button>
 <div class="unit-pick"><small>CHOOSE A UNIT FOR LESSONS & QUIZZES</small><div class="unit-tabs"><button class="unit-tab on">UNIT 4</button><button class="unit-tab" disabled>UNIT 5</button><button class="unit-tab" disabled>UNIT 6</button></div><p style="font-size:11px;color:var(--muted)">UNIT 4 = Conditional Statements (if / AND / OR / switch). Units 5-6 soon.</p></div>
 </div>
 </div>
@@ -129,6 +140,14 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:2px solid 
 <div class="path" id="path"></div>
 <p class="footer-note">Complete nodes in order to unlock the Boss Chest.</p>
 </div>
+<div id="screen-diagrams" class="screen">
+<button class="btn btn-outline" style="width:auto" onclick="show('screen-home')">← HOME</button>
+<div class="home-kicker" style="margin-top:14px">UNIT 4 • DIAGRAMS FROM THE DECKS</div>
+<h1 class="home-title" style="font-size:24px">Flowcharts & how they work.</h1>
+<p class="home-sub">The same diagrams appear inside their lesson slides. Tap any card to zoom.</p>
+<div class="flow-grid" id="flowGrid"></div>
+</div>
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeDiagram()"><div class="lightbox-inner"><h3 id="lbTitle" style="margin:0 0 4px"></h3><p id="lbDesc" style="color:var(--muted);font-size:13px;font-weight:700"></p><img id="lbImg" alt="Flowchart zoomed"><div style="display:flex;gap:10px;margin-top:12px"><button class="btn btn-outline" onclick="closeDiagram()">CLOSE</button><button class="btn btn-green" id="lbStudy" onclick="closeDiagram()">STUDY →</button></div></div></div>
 <div id="screen-lesson" class="screen">
 <div class="lesson-top"><span onclick="show('screen-path')" style="cursor:pointer;font-weight:900;font-size:20px;color:var(--gray-dark)">✕</span><div class="lesson-progress"><div id="lessonBar"></div></div><b id="lessonCount" style="font-size:13px;color:var(--muted);white-space:nowrap"></b><span style="font-weight:900;font-size:13px;color:#1cb0f6;white-space:nowrap">⭐ <span id="xpLesson">0</span></span><span style="font-weight:900;font-size:13px;white-space:nowrap">🔥 <span id="streakLesson">1</span></span></div>
 <div class="unit-kicker">UNIT 4 • LESSONS (slides only, full text)</div>
@@ -246,6 +265,25 @@ state.slide=ns;renderSlide();}
 function allDone(){return LESSONS.every((_,i)=>state.done.has(i))}
 function showComplete(){document.getElementById('finXp').textContent=state.xp;document.getElementById('finLessons').textContent=state.lessonsDone+' / '+LESSONS.length;document.getElementById('finStreak').textContent=state.streak;show('screen-complete')}
 function nextUnit(){alert('Unit 5 is not published yet. Review Unit 4 or check back later!')}
+const DIAGRAMS=[
+{src:"assets/flowcharts/if-flow.jpeg",t:"if flowchart",d:"Part 1 • Slide 6 — diamond tests boolean_expression. TRUE runs statement, FALSE skips to endif.",lesson:1},
+{src:"assets/flowcharts/ifelse-flow.jpeg",t:"if-else flowchart",d:"Part 1 • Slide 9 — TRUE runs statement1, FALSE runs statement2, paths rejoin.",lesson:2},
+{src:"assets/flowcharts/if-standards.jpeg",t:"Pseudocode standards",d:"Part 1 • Slide 12 — if / else / endif / then roles, indentation, then is for clarity.",lesson:0},
+{src:"assets/flowcharts/positive-compare.jpeg",t:"Positive comparison",d:"Part 1 • Slide 15 — customerCode = 1 → 0.50 else 0.25. Prefer positive over negative.",lesson:2},
+{src:"assets/flowcharts/negative-compare.jpeg",t:"Negative comparison",d:"Part 1 • Slide 14 — customerCode <> 1 → 0.25 else 0.50. Same logic, harder to read.",lesson:2},
+{src:"assets/flowcharts/evenodd-a.png",t:"EVEN / ODD flowchart",d:"Part 1 • Slides 18-19 — Remainder = N modulo 2, diamond == 0? YES → EVEN, NO → ODD.",lesson:2},
+{src:"assets/flowcharts/and-nested.jpeg",t:"AND as nested ifs",d:"Part 2 • Slide 3 — callsMade > CALLS? then callMinutes > MINUTES? Only both-YES adds PREMIUM.",lesson:3},
+{src:"assets/flowcharts/and-patron.jpeg",t:"Patron AND + declarations",d:"Part 2 • Slide 4 — patronAge between 12 and 65 pays 8.50, else 6.00.",lesson:3},
+{src:"assets/flowcharts/or-nested.jpeg",t:"OR as else-if",d:"Part 2 • Slide 6 — callsMade > CALLS? else textsSent > TEXTS? Either YES adds PREMIUM.",lesson:4},
+{src:"assets/flowcharts/switch-general.jpeg",t:"Switch general flow",d:"Part 2 • Slide 8 — evaluate once, fall through Case 1 → n → default, every hit breaks out.",lesson:5},
+{src:"assets/flowcharts/two-numbers.jpeg",t:"Two numbers compare",d:"Part 2 • Slides 11/21 — x==y? then x<y? Three outputs, nested endif endif.",lesson:6},
+{src:"assets/flowcharts/three-numbers.jpeg",t:"Sum of two = third",d:"Part 2 • Slides 13/24 — x+y==z? then x+z==y? then y+z==x? Names which position.",lesson:6},
+{src:"assets/flowcharts/average-and.jpeg",t:"Average AND gate",d:"Part 2 • Slide 27 — Eng>=75 AND Math>=75 AND Sci>=75 in ONE diamond. FALSE skips to Stop.",lesson:6},
+{src:"assets/flowcharts/remainder-switch.jpeg",t:"Remainder switch",d:"Part 2 • Slide 30 — rem = x % y, diamonds rem==0? ==1? ==2? else default greater than 2.",lesson:6}
+];
+function showDiagrams(){const g=document.getElementById('flowGrid');g.innerHTML=DIAGRAMS.map((d,i)=>`<button class="flow-thumb" onclick="openDiagram(${i})"><img src="${d.src}" alt="${d.t}" loading="lazy"><b>${d.t}</b><span>${d.d.split('—')[0]}</span></button>`).join('');show('screen-diagrams')}
+function openDiagram(i){const d=DIAGRAMS[i];document.getElementById('lbTitle').textContent=d.t;document.getElementById('lbDesc').textContent=d.d;document.getElementById('lbImg').src=d.src;document.getElementById('lbStudy').onclick=()=>{closeDiagram();openLesson(d.lesson)};document.getElementById('lightbox').classList.add('show')}
+function closeDiagram(){document.getElementById('lightbox').classList.remove('show')}
 function startHomeLessons(){const n=LESSONS.findIndex((_,i)=>!state.done.has(i));openLesson(n<0?0:n)}
 function startHomeQuiz(){const n=LESSONS.findIndex((_,i)=>!state.done.has(i));startQuiz(n<0?0:n)}
 function startLongQuiz(){if(state.hearts<=0){alert('Out of hearts! Review a lesson slide to refill them.');return}state.isLong=true;state.longQs=QUIZZES.flat();state.qi=0;state.score=0;state.selected=null;state.orderSel=[];const cb=document.getElementById('checkBtn');cb.style.display='block';cb.disabled=false;cb.textContent='CHECK';cb.onclick=()=>checkAnswer();document.getElementById('quizActions').style.display='block';show('screen-quiz');renderQ();}
