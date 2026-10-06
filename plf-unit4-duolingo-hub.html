@@ -66,6 +66,14 @@ table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{border:2px solid var(--gray);padding:8px;text-align:left}
 th{background:#f7f7f7}
 .footer-note{color:var(--muted);font-size:13px;text-align:center;margin-top:30px}
+.layout.focus-mode{grid-template-columns:1fr;max-width:760px}
+.layout.focus-mode .sidebar{display:none}
+.lesson-top{display:flex;align-items:center;gap:14px;margin:6px 0 14px}
+.lesson-top .x{cursor:pointer;font-weight:900;font-size:20px;color:var(--gray-dark)}
+.lesson-progress{flex:1;height:14px;background:var(--gray);border-radius:99px;overflow:hidden}
+.lesson-progress>div{height:100%;background:var(--green);width:12%;border-radius:99px}
+.lesson-card{border:2px solid var(--gray);border-radius:18px;padding:22px;background:#fff}
+.lesson-actions{position:sticky;bottom:0;background:#fff;border-top:2px solid var(--gray);padding:14px 0;margin-top:20px;display:flex;gap:10px}
 </style>
 </head>
 <body>
@@ -79,7 +87,7 @@ th{background:#f7f7f7}
   </div>
 </div>
 
-<div class="layout">
+<div class="layout" id="layout">
 <div>
   <!-- HOME -->
   <div id="screen-home" class="screen show">
@@ -91,13 +99,18 @@ th{background:#f7f7f7}
     <p class="footer-note">Complete nodes in order to unlock the Boss Chest. Hearts refill on lesson review.</p>
   </div>
 
-  <!-- LESSON -->
+  <!-- LESSON - SEPARATE UI -->
   <div id="screen-lesson" class="screen">
-    <button class="btn btn-outline" style="width:auto" onclick="show('screen-home')">← Back to path</button>
-    <div id="lessonContent" style="margin-top:14px"></div>
-    <div style="display:flex;gap:10px;margin-top:16px">
-      <button class="btn btn-blue" onclick="show('screen-home')">LEARN LATER</button>
-      <button class="btn btn-green" id="startQuizBtn">START PRACTICE →</button>
+    <div class="lesson-top">
+      <span class="x" onclick="show('screen-home')">✕</span>
+      <div class="lesson-progress"><div id="lessonBar"></div></div>
+      <b id="lessonCount" style="font-size:13px;color:var(--muted)"></b>
+    </div>
+    <div id="lessonContent" class="lesson-card"></div>
+    <div class="lesson-actions">
+      <button class="btn btn-outline" onclick="lessonNav(-1)">← PREV</button>
+      <button class="btn btn-blue" onclick="show('screen-home')">PATH</button>
+      <button class="btn btn-green" id="startQuizBtn">PRACTICE →</button>
     </div>
   </div>
 
@@ -318,11 +331,14 @@ function renderPath(){
     p.appendChild(lab);
   });
 }
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));document.getElementById(id).classList.add('show');window.scrollTo(0,0)}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));document.getElementById(id).classList.add('show');document.getElementById('layout').classList.toggle('focus-mode',id!=='screen-home');window.scrollTo(0,0)}
+function lessonNav(d){openLesson((state.current+d+LESSONS.length)%LESSONS.length)}
 function scrollPath(){document.getElementById('path').scrollIntoView({behavior:'smooth'})}
 function openLesson(i){
   state.current=i;
-  document.getElementById('lessonContent').innerHTML=`<div class="card"><div style="font-size:44px">${LESSONS[i].icon}</div>${LESSONS[i].body}</div>`;
+  document.getElementById('lessonContent').innerHTML=`<div style="font-size:44px">${LESSONS[i].icon}</div>${LESSONS[i].body}`;
+  document.getElementById('lessonBar').style.width=((i+1)/LESSONS.length*100)+'%';
+  document.getElementById('lessonCount').textContent=(i+1)+' / '+LESSONS.length;
   document.getElementById('startQuizBtn').onclick=()=>startQuiz(i);
   show('screen-lesson');
 }
