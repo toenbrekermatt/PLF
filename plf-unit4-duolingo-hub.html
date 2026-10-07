@@ -73,6 +73,36 @@ body{margin:0;background:#fff;color:var(--text)}
 .walk-nav{display:flex;align-items:center;gap:10px}
 .walk-btn{width:auto;padding:10px 18px;font-size:13px}
 .walk-dots{flex:1;display:flex;gap:6px;justify-content:center}
+.winfo{background:#fff;border:2px solid var(--gray);border-radius:12px;padding:14px;margin:10px 0}
+.wtop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.wbadge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:99px;font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase}
+.wbadge .wdot{width:9px;height:9px;border-radius:50%}
+.wbadge.term{background:#D7FFB8;color:#58A700}.wbadge.term .wdot{background:#8ED44E}
+.wbadge.io{background:#DDF4FF;color:#1899D6}.wbadge.io .wdot{background:#7FD1F7}
+.wbadge.dec{background:#FFF6D6;color:#9A7400}.wbadge.dec .wdot{background:#F0C33C}
+.wbadge.proc{background:#F0F1F3;color:#6B7280}.wbadge.proc .wdot{background:#CFD6E0}
+.wbadge.flow{background:#F0F1F3;color:#6B7280}.wbadge.flow .wdot{background:#C3CAD4}
+.wcount{font-size:12px;font-weight:900;letter-spacing:1px;color:#C4C4C4}
+.winfo h4{font-size:18px;font-weight:900;margin:0 0 2px}
+.wsub{font-size:13px;font-weight:800;color:var(--muted);margin-bottom:10px}
+.winfo p{font-size:14.5px;line-height:1.65;margin:0}
+.wtip{margin-top:12px;font-size:13px;font-weight:700;color:var(--muted)}
+.flow-svg .sym{transition:opacity .35s ease;cursor:pointer}
+.flow-svg.focusing .sym{opacity:.14}
+.flow-svg.focusing .sym.active{opacity:1}
+.flow-svg .sym.active ellipse,.flow-svg .sym.active rect,.flow-svg .sym.active polygon{stroke:#58cc02 !important;stroke-width:4;animation:pulseGlow 1.8s ease-in-out infinite}
+.flow-svg .sym.active text{fill:#3A8A00}
+@keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 4px rgba(88,204,2,.45))}50%{filter:drop-shadow(0 0 13px rgba(88,204,2,.85))}}
+.legend{margin-top:26px;border-top:2px solid var(--gray);padding-top:22px}
+.legend h2{font-size:19px;font-weight:900;margin:0 0 4px}
+.legend>p{color:var(--muted);font-weight:700;font-size:13.5px;margin:0 0 14px}
+.legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.legend-grid{grid-template-columns:1fr}}
+.lg-item{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--gray);border-radius:14px;padding:12px;background:#fff}
+.lg-swatch{flex:0 0 46px;display:flex;align-items:center;justify-content:center}
+.lg-swatch svg{width:46px;height:auto}
+.lg-text b{display:block;font-size:13.5px;font-weight:900;margin-bottom:2px}
+.lg-text span{font-size:12.5px;font-weight:600;color:var(--muted);line-height:1.5}
 .flow-thumb svg{width:100%;height:auto;max-height:240px;border-radius:8px;background:#fff;border:1px solid var(--gray)}
 #lbImgWrap svg{width:100%;height:auto}
 #lbImgWrap img{width:100%;border-radius:10px}
@@ -161,6 +191,12 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:2px solid 
 <h1 class="home-title" style="font-size:24px">Flowcharts & how they work.</h1>
 <p class="home-sub">The same diagrams appear inside their lesson slides. Tap any card to zoom.</p>
 <div class="flow-grid" id="flowGrid"></div>
+<div class="legend"><h2>Flowchart Symbol Legend</h2><p>The standard shapes used in every diagram above.</p><div class="legend-grid">
+<div class="lg-item"><div class="lg-swatch"><svg viewBox="0 0 46 30"><rect x="2" y="5" width="42" height="20" rx="10" fill="#E8F8D8" stroke="#8ED44E" stroke-width="2.5"/></svg></div><div class="lg-text"><b>Terminator — Oval</b><span>START begins, STOP ends the program.</span></div></div>
+<div class="lg-item"><div class="lg-swatch"><svg viewBox="0 0 46 30"><polygon points="9,5 44,5 37,25 2,25" fill="#DDF4FF" stroke="#7FD1F7" stroke-width="2.5"/></svg></div><div class="lg-text"><b>Input / Output — Parallelogram</b><span>Moves data in or out of the program.</span></div></div>
+<div class="lg-item"><div class="lg-swatch"><svg viewBox="0 0 46 30"><polygon points="23,2 44,15 23,28 2,15" fill="#FFF6D6" stroke="#F0C33C" stroke-width="2.5"/></svg></div><div class="lg-text"><b>Decision — Diamond</b><span>Holds the Boolean test. Two exits: true and false.</span></div></div>
+<div class="lg-item"><div class="lg-swatch"><svg viewBox="0 0 46 30"><rect x="2" y="5" width="42" height="20" rx="3" fill="#F4F5F7" stroke="#CFD6E0" stroke-width="2.5"/></svg></div><div class="lg-text"><b>Process — Rectangle</b><span>A calculation or assignment step.</span></div></div>
+</div></div>
 </div>
 <div class="lightbox" id="lightbox" onclick="if(event.target===this)closeDiagram()"><div class="lightbox-inner"><h3 id="lbTitle" style="margin:0 0 4px"></h3><p id="lbDesc" style="color:var(--muted);font-size:13px;font-weight:700"></p><ol id="lbSteps" class="how" style="text-align:left"></ol><div id="lbImgWrap"></div><div style="display:flex;gap:10px;margin-top:12px"><button class="btn btn-outline" onclick="closeDiagram()">CLOSE</button><button class="btn btn-green" id="lbStudy" onclick="closeDiagram()">STUDY →</button></div></div></div>
 <div id="screen-lesson" class="screen">
@@ -271,60 +307,189 @@ function wrapT(t,m){const w=String(t).split(' ');const L=[];let c='';w.forEach(x
 function flowSVG(f){
  __flowN++;const mid='ah'+__flowN;
  const W=420,CX=190,LANE=335,EXIT=402,GAP=22;
- let y=16;const el=[];
- el.push('<defs><marker id="'+mid+'" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#3c3c3c"/></marker></defs>');
- const ln=(x1,y1,x2,y2,a)=>{if(y2>y1||x2!==x1)el.push('<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#3c3c3c" stroke-width="2"'+(a===false?'':' marker-end="url(#'+mid+')"')+' />')};
- const tx=(x,cy,lines,sz,fill,b)=>{const lh=sz+3;const y0=cy-(lines.length-1)*lh/2+sz*0.35;el.push('<text x="'+x+'" y="'+y0+'" text-anchor="middle" font-size="'+sz+'" fill="'+(fill||'#3c3c3c')+'"'+(b?' font-weight="900"':'')+'>'+lines.map((l,i)=>'<tspan x="'+x+'" dy="'+(i===0?0:lh)+'">'+esc(l)+'</tspan>').join('')+'</text>')};
- const lab=(x,yy,t,c)=>el.push('<text x="'+x+'" y="'+yy+'" text-anchor="middle" font-size="11" font-weight="800" fill="'+c+'">'+esc(t)+'</text>');
- const term=(label,fill)=>{if(y>16)ln(CX,y,CX,y+GAP);y+= (y>16?GAP:0);el.push('<ellipse cx="'+CX+'" cy="'+(y+20)+'" rx="75" ry="20" fill="'+fill+'" stroke="'+fill+'"/>');tx(CX,y+20,wrapT(label,20),13,'#fff',1);y+=40;return y};
- const shapeBox=(bx,top,w,h,label,io,tsz)=>{const L=wrapT(label,io?34:(w>200?30:15));
-  if(io){const s=16;el.push('<polygon points="'+(bx-w/2+s)+','+top+' '+(bx+w/2+s)+','+top+' '+(bx+w/2-s)+','+(top+h)+' '+(bx-w/2-s)+','+(top+h)+'" fill="#1cb0f6"/>')}
-  else{el.push('<rect x="'+(bx-w/2)+'" y="'+top+'" width="'+w+'" height="'+h+'" rx="6" fill="#fff" stroke="#58a700" stroke-width="2"/>')}
-  tx(bx,top+h/2,L,tsz||12,io?'#fff':'#3c3c3c',0)};
- const stdBox=(label,io)=>{if(y>16){ln(CX,y,CX,y+GAP);y+=GAP}shapeBox(CX,y,260,48,label,io);y+=48;return y};
+ const INK='#3C3C3C',LINE='#C3CAD4';
+ let y=16;const el=[];let G=null;
+ const out=s=>{(G||el).push(s)};
+ const beg=()=>{G=[]};
+ const end=id=>{el.push('<g class="sym" data-r="'+id+'">'+G.join('')+'</g>');G=null};
+ el.push('<defs><marker id="'+mid+'" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="'+LINE+'"/></marker></defs>');
+ const ln=(x1,y1,x2,y2,a)=>{if(y2>y1||x2!==x1)out('<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+LINE+'" stroke-width="2.5" stroke-linecap="round"'+(a===false?'':' marker-end="url(#'+mid+')"')+' />')};
+ const tx=(x,cy,lines,sz,fill,b)=>{const lh=sz+3;const y0=cy-(lines.length-1)*lh/2+sz*0.35;out('<text x="'+x+'" y="'+y0+'" text-anchor="middle" font-size="'+sz+'" fill="'+(fill||INK)+'"'+(b?' font-weight="900"':'')+'>'+lines.map((l,i)=>'<tspan x="'+x+'" dy="'+(i===0?0:lh)+'">'+esc(l)+'</tspan>').join('')+'</text>')};
+ const lab=(x,yy,t,c)=>out('<text x="'+x+'" y="'+yy+'" text-anchor="middle" font-size="11" font-weight="800" fill="'+c+'">'+esc(t)+'</text>');
+ const term=(label,fill,stroke)=>{if(y>16){ln(CX,y,CX,y+GAP);y+=GAP}beg();out('<ellipse cx="'+CX+'" cy="'+(y+20)+'" rx="75" ry="20" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5"/>');tx(CX,y+20,wrapT(label,20),13,INK,1);y+=40;return y};
+ const shapeBox=(bx,top,w,h,label,io,tsz,fill,stroke)=>{const L=wrapT(label,io?34:(w>200?30:15));
+  if(io){const s=16;out('<polygon points="'+(bx-w/2+s)+','+top+' '+(bx+w/2+s)+','+top+' '+(bx+w/2-s)+','+(top+h)+' '+(bx-w/2-s)+','+(top+h)+'" fill="'+(fill||'#DDF4FF')+'" stroke="'+(stroke||'#7FD1F7')+'" stroke-width="2.5"/>')}
+  else{out('<rect x="'+(bx-w/2)+'" y="'+top+'" width="'+w+'" height="'+h+'" rx="10" fill="'+(fill||'#F4F5F7')+'" stroke="'+(stroke||'#CFD6E0')+'" stroke-width="2.5"/>')}
+  tx(bx,top+h/2,L,tsz||12,INK,0)};
+ const stdBoxUnused=0;
  const exits=[],nexits=[];
- f.rows.forEach(r=>{
-  if(r.k==='t'){const bot=term(r.t,r.c==='red'?'#ff4b4b':'#1cb0f6');const sy=bot-40;
-   const all=exits.map(e=>({x:e,n:1})).concat(nexits.map(e=>({x:LANE,n:0})));
-   if(exits.length||nexits.length){let topY=Infinity;exits.forEach(e=>{topY=Math.min(topY,e);ln(CX+130,e,EXIT,e,false)});nexits.forEach(e=>{topY=Math.min(topY,e);ln(LANE,e,EXIT,e,false)});ln(EXIT,topY,EXIT,sy,false);ln(EXIT,sy,CX+70,sy);ln(CX+70,sy,CX,sy);exits.length=0;nexits.length=0}
+ f.rows.forEach((r,ri)=>{
+  const RID='r'+ri;
+  if(r.k==='t'){const bot=term(r.t,r.c==='red'?'#FFDFE0':'#E8F8D8',r.c==='red'?'#FF9B9B':'#8ED44E');end(RID);
+   const all=exits.map(e=>({x:CX+130,y:e.y,i:e.i})).concat(nexits.map(e=>({x:LANE,y:e.y,i:e.i})));
+   all.forEach(e=>{beg();ln(e.x,e.y,EXIT,e.y,false);end('r'+e.i+'e')});
+   if(all.length){let topY=Infinity;all.forEach(e=>{topY=Math.min(topY,e.y)});beg();ln(EXIT,topY,EXIT,bot-40,false);ln(EXIT,bot-40,CX+70,bot-40);ln(CX+70,bot-40,CX,bot-40);end(all.map(e=>'r'+e.i+'e').join(' '));exits.length=0;nexits.length=0}
    y=bot}
-  else if(r.k==='b'){stdBox(r.t,r.s==='io')}
+  else if(r.k==='b'){ln(CX,y,CX,y+GAP);y+=GAP;beg();shapeBox(CX,y,260,48,r.t,r.s==='io');y+=48;end(RID)}
   else if(r.k==='d'){
-   if(y>16){ln(CX,y,CX,y+GAP);y+=GAP}
+   ln(CX,y,CX,y+GAP);y+=GAP;
    const dy=y+42;
-   el.push('<polygon points="'+(CX-115)+','+dy+' '+CX+','+(dy-42)+' '+(CX+115)+','+dy+' '+CX+','+(dy+42)+'" fill="#fff" stroke="#3c3c3c" stroke-width="2"/>');
-   tx(CX,dy,wrapT(r.c,22),12,'#3c3c3c',1);
+   beg();out('<polygon points="'+(CX-115)+','+dy+' '+CX+','+(dy-42)+' '+(CX+115)+','+dy+' '+CX+','+(dy+42)+'" fill="#FFF6D6" stroke="#F0C33C" stroke-width="2.5"/>');
+   tx(CX,dy,wrapT(r.c,22),12,INK,1);end(RID);
    const yB=(r.y||[]),nB=(r.n||[]);
    const hasY=yB.length>0,hasN=nB.length>0;
    let yy=dy+42;
-   if(hasY){ln(CX,yy,CX,yy+GAP+12);lab(CX-18,yy+10,r.yl||'Yes','#58a700');yy+=GAP+12;
+   beg();
+   if(hasY){ln(CX,yy,CX,yy+GAP+12);lab(CX-18,yy+10,r.yl||'Yes','#58A700');yy+=GAP+12;
     yB.forEach((b,i)=>{if(i>0){ln(CX,yy,CX,yy+GAP);yy+=GAP}shapeBox(CX,yy,260,48,b.t,b.s==='io');yy+=48});}
    else{ln(CX,yy,CX,yy+GAP);yy+=GAP}
-   ln(CX+115,dy,LANE,dy,false);lab((CX+115+LANE)/2,dy-6,r.nl||'No','#d33131');
-   if(hasN)ln(LANE,dy,LANE,dy+GAP);
+   end(RID+'y');
+   beg();ln(CX+115,dy,LANE,dy,false);lab((CX+115+LANE)/2,dy-6,r.nl||'No','#EA2B2B');
+   if(hasN)ln(LANE,dy,LANE,dy+GAP);end(RID+'n');
    let ny=dy+GAP;
-   nB.forEach((b,i)=>{if(i>0){ln(LANE,ny,LANE,ny+GAP);ny+=GAP}shapeBox(LANE,ny,150,48,b.t,false,11);ny+=48});
-   const dot=(x,yy2)=>el.push('<circle cx="'+x+'" cy="'+yy2+'" r="4" fill="#afafaf"/>');
-   if(r.ey)exits.push(yy);
-   if(r.nx)nexits.push(dy);
+   nB.forEach((b,i)=>{beg();if(i>0){ln(LANE,ny,LANE,ny+GAP);ny+=GAP}else{ny+=0}shapeBox(LANE,ny,150,48,b.t,false,11);ny+=48;end(RID+'n '+RID+'n'+i)});
+   const dot=(x,yy2)=>'<circle cx="'+x+'" cy="'+yy2+'" r="4" fill="#8A919C"/>';
+   if(r.ey)exits.push({y:yy,i:ri});
+   if(r.nx)nexits.push({y:dy,i:ri});
+   beg();
    if(hasN){
     const mY=Math.max(yy,ny)+GAP;
     if(hasY&&!r.ey)ln(CX,yy,CX,mY,false);
     if(!hasY)ln(CX,yy,CX,mY,false);
-    ln(LANE,ny,LANE,mY,false);ln(LANE,mY,CX,mY);dot(CX,mY);
+    ln(LANE,ny,LANE,mY,false);ln(LANE,mY,CX,mY);out(dot(CX,mY));
     y=mY;
    }else if(r.nx||r.ey){
     if(!hasY){y=yy}
-    else{const mY2=yy+GAP;ln(CX,yy,CX,mY2,false);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);dot(CX,mY2);y=mY2}
-    if(!hasY&&r.ey){y=yy}
+    else{const mY2=yy+GAP;ln(CX,yy,CX,mY2,false);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);out(dot(CX,mY2));y=mY2}
    }else{
-    if(hasY){const mY2=yy+GAP;ln(CX,yy,CX,mY2,false);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);dot(CX,mY2);y=mY2}
+    if(hasY){const mY2=yy+GAP;ln(CX,yy,CX,mY2,false);ln(LANE,dy,LANE,mY2,false);ln(LANE,mY2,CX+4,mY2,false);out(dot(CX,mY2));y=mY2}
     else y=yy;
    }
+   end(RID+'m');
   }
  });
  return '<svg viewBox="0 0 '+W+' '+(y+30)+'" class="flow-svg" role="img">'+el.join('')+'</svg>';
 }
+const GUIDES={
+if:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'START',s:'Rounded oval · the program begins',d:'The terminator marks where the program begins. It pairs with exactly one STOP so the reader knows the boundaries of the logic.',tip:'One START, one STOP — the bookends of every flowchart.'},
+{syms:['r1'],b:['dec','Decision'],t:'boolean_expression?',s:'Diamond · test the condition',d:'The diamond holds the Boolean test. It is the only shape with two exits — true and false. Exactly one is taken: never both, never neither.',tip:'If you can ask it as a yes/no question, it belongs in a diamond.'},
+{syms:['r1y'],b:['flow','Flow Line'],t:'TRUE path — run statement',s:'Arrow down · the condition was met',d:'TRUE travels DOWN into the statement box, runs it, and continues to the merge dot. In the deck example, x = 5 makes 5 > 0 true, so it prints "The number is positive".',tip:'Follow the green true label with your finger.'},
+{syms:['r1n','r1m'],b:['flow','Flow Line'],t:'FALSE path — the bypass',s:'Arrow right · skip and rejoin',d:'FALSE travels RIGHT along the bypass lane, skips the statement box entirely, and rejoins at the merge dot — that rejoin IS endif. With x = −5 nothing prints.',tip:'Both paths always merge back together.'},
+{syms:['r2'],b:['term','Terminator'],t:'End',s:'Rounded oval · the program ends',d:'Both branches arrive at this single End. Whichever path was taken, execution finishes here.',tip:'One entry, one exit — a well-formed flowchart.'}]},
+ifelse:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'START',s:'Rounded oval · the program begins',d:'Same terminator as before — the oval that marks the start of the program.',tip:'Every complete program flowchart starts with exactly one terminator.'},
+{syms:['r1'],b:['dec','Decision'],t:'boolean_expression?',s:'Diamond · the Boolean test',d:'The diamond tests the condition. Unlike the plain if chart, BOTH exits now lead somewhere — there is no empty branch.',tip:'An if-else always has work to do on both sides.'},
+{syms:['r1y'],b:['proc','Process'],t:'statement1 — the TRUE branch',s:'Rectangle · it was true',d:'When the test is true, flow goes DOWN and this box runs. In the deck example (temperature 20), forecast becomes "SNOW".',tip:'Process boxes never ask a question — they just do work.'},
+{syms:['r1n'],b:['proc','Process'],t:'statement2 — the FALSE branch',s:'Rectangle · it was false',d:'When the test is false, THIS box runs instead (temperature 40 → "RAIN"). Exactly one of the two always executes — that is what makes it an if-else.',tip:'if-else = guaranteed exactly one branch. if = zero or one.'},
+{syms:['r1m'],b:['flow','Flow Line'],t:'Merge back together',s:'Arrows · the two paths rejoin',d:'Both branches flow down and rejoin at the merge dot. After the merge there is only one path again, so the rest of the program does not care which branch ran.',tip:'The merge point is where the two alternatives become one again.'},
+{syms:['r2'],b:['term','Terminator'],t:'End',s:'Rounded oval · the program ends',d:'The program ends here after exactly one branch has run.',tip:'Start → decide → act → stop.'}]},
+posCmp:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'START',s:'Rounded oval · the program begins',d:'The discount program begins. Flow enters from the top.',tip:'Always start reading a flowchart at START.'},
+{syms:['r1'],b:['dec','Decision'],t:'customerCode = 1?',s:'Diamond · the positive test',d:'A positive comparison: is the code exactly 1? YES means code IS 1, NO means anything else.',tip:'Positive tests read most naturally — prefer them.'},
+{syms:['r1y'],b:['proc','Process'],t:'discount = 0.50',s:'Rectangle · code was 1',d:'YES (code is 1) → discount 0.50. Members with code 1 get the bigger discount.',tip:'Trace it: code 1 → 0.50.'},
+{syms:['r1n','r1m'],b:['proc','Process'],t:'discount = 0.25',s:'Rectangle · any other code',d:'NO (any other code) → discount 0.25, then rejoin at the merge.',tip:'Trace it: code 7 → 0.25.'},
+{syms:['r2'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Both outcomes arrive at the single Stop.',tip:'Compare with the negative form in the gallery.'}]},
+negCmp:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'START',s:'Rounded oval · the program begins',d:'Same discount program, written with a negative test.',tip:'Spot how the YES/NO outcomes swap compared to the positive form.'},
+{syms:['r1'],b:['dec','Decision'],t:'customerCode <> 1?',s:'Diamond · the negative test',d:'<> means "not equal". YES means the code is NOT 1; NO means it IS 1.',tip:'Negative tests force the reader to think backwards.'},
+{syms:['r1y'],b:['proc','Process'],t:'discount = 0.25',s:'Rectangle · code was not 1',d:'YES (code is anything but 1) → discount 0.25.',tip:'Trace it: code 7 → 0.25.'},
+{syms:['r1n','r1m'],b:['proc','Process'],t:'discount = 0.50',s:'Rectangle · code was 1',d:'NO (code IS 1) → discount 0.50, then rejoin.',tip:'Same outcome as the positive form — Slide 15 says prefer that one.'},
+{syms:['r2'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Identical result, harder to read. That is why the deck teaches the positive equivalent.',tip:'Write positive tests whenever you can.'}]},
+evenodd:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The EVEN/ODD checker from the seatwork begins.',tip:'Read top to bottom, following the arrows.'},
+{syms:['r1'],b:['io','Input'],t:'Input N',s:'Parallelogram · read data in',d:'The slanted parallelogram reads a value from the user into N. Input and Output share this shape.',tip:'Slanted = data moving in or out.'},
+{syms:['r2'],b:['proc','Process'],t:'Remainder = N modulo 2',s:'Rectangle · do the math',d:'Modulo gives the leftover after dividing by 2. Even numbers leave 0; odd numbers leave 1.',tip:'N % 2 can only ever be 0 or 1.'},
+{syms:['r3'],b:['dec','Decision'],t:'Remainder == 0?',s:'Diamond · the divisibility test',d:'Zero remainder means N divides evenly. Any other value means it does not.',tip:'The diamond asks the one decisive question.'},
+{syms:['r3y'],b:['proc','Process'],t:'Answer = EVEN',s:'Rectangle · it divided evenly',d:'YES → N is even. Trace N = 4: 4 % 2 = 0 → EVEN.',tip:'Follow the green Yes arrow down.'},
+{syms:['r3n','r3m'],b:['proc','Process'],t:'Answer = ODD',s:'Rectangle · something was left over',d:'NO → N is odd, then rejoin. Trace N = 7: 7 % 2 = 1 → ODD.',tip:'Follow the red No arrow right.'},
+{syms:['r4'],b:['io','Output'],t:'Output Answer',s:'Parallelogram · show the result',d:'One shared output prints whichever answer was set — both paths use this same box.',tip:'Output after the merge serves both branches.'},
+{syms:['r5'],b:['term','Terminator'],t:'End',s:'Rounded oval · the program ends',d:'Done. Two possible answers, one shared ending.',tip:'Every path through the chart ends here.'}]},
+andNest:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The cell-phone billing program begins: charge a premium only to heavy users.',tip:'The problem needs BOTH conditions — that is the whole point.'},
+{syms:['r1','r1n'],b:['dec','Decision'],t:'callsMade > CALLS?',s:'Diamond 1 · first gate (100 calls)',d:'More than 100 calls? YES falls THROUGH into the second diamond. NO drops out along the bypass lane, skipping everything below.',tip:'A NO here means instant exit — minutes never even get checked.'},
+{syms:['r2'],b:['dec','Decision'],t:'callMinutes > MINUTES?',s:'Diamond 2 · second gate (500 minutes)',d:'Only reachable after passing gate 1. More than 500 minutes? YES → premium. NO → rejoin and stop with no charge.',tip:'Two doors in a row: you must pass both. That nesting IS the AND.'},
+{syms:['r2y'],b:['proc','Process'],t:'customerBill += PREMIUM',s:'Rectangle · both gates passed',d:'Only the TRUE → TRUE path arrives here. 120 calls + 600 minutes pays the premium; 120 calls + 100 minutes does not.',tip:'One box, reachable by exactly one path.'},
+{syms:['r2n','r2m'],b:['flow','Flow Line'],t:'Second NO — no charge',s:'Arrow · failed the minutes test',d:'Passed calls but failed minutes → bypass the premium box and rejoin below.',tip:'Either NO anywhere kills the whole AND.'},
+{syms:['r3','r1e'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'All paths end here. The exit lane on the right carried every early NO straight down.',tip:'Nested ifs and one AND line mean exactly the same thing.'}]},
+andPatron:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The patron discount program begins.',tip:'Who pays full price and who gets the discount?'},
+{syms:['r1'],b:['dec','Decision'],t:'patronAge > 12 AND patronAge < 65?',s:'Diamond · both halves at once',d:'One diamond checks BOTH halves: older than 12 AND younger than 65. Both must hold.',tip:'Declarations from the deck: MIN_AGE = 12, MAX_AGE = 65, FULL 8.50, DISCOUNTED 6.00.'},
+{syms:['r1y'],b:['proc','Process'],t:'price = 8.50 FULL',s:'Rectangle · in the middle band',d:'YES (ages 13–64) → full price 8.50. Trace 30 → 8.50.',tip:'Inside the band pays full.'},
+{syms:['r1n','r1m'],b:['proc','Process'],t:'price = 6.00 SALE',s:'Rectangle · kid or senior',d:'NO (12 or below, 65 or above) → discounted 6.00. Trace 10 → 6.00. Trace 70 → 6.00.',tip:'Outside the band gets the discount.'},
+{syms:['r2'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Both prices converge at the single Stop.',tip:'Kids and seniors share one discounted path.'}]},
+orNest:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The premium billing program begins. Meeting ANY criterion is enough.',tip:'OR is generous: one hit pays.'},
+{syms:['r1'],b:['dec','Decision'],t:'callsMade > CALLS?',s:'Diamond 1 · first chance',d:'More than 100 calls? YES → premium immediately via the right exit lane.',tip:'First YES wins — no need to check further.'},
+{syms:['r1y','r1e'],b:['proc','Process'],t:'+ PREMIUM — via calls',s:'Rectangle · qualified on calls',d:'High call count alone triggers the premium. Done after one test.',tip:'Trace 200 calls + 10 texts → premium here.'},
+{syms:['r1n'],b:['flow','Flow Line'],t:'First NO — second chance',s:'Arrow · fall through, not out',d:'NO does NOT exit — it falls through to the second diamond. Contrast this with AND, where a NO exits immediately.',tip:'This fall-through is the whole difference between OR and AND.'},
+{syms:['r2'],b:['dec','Decision'],t:'textsSent > TEXTS?',s:'Diamond 2 · second chance',d:'Heavy texter? YES → premium. Only reachable when calls failed.',tip:'Two chances to win.'},
+{syms:['r2y'],b:['proc','Process'],t:'+ PREMIUM — via texts',s:'Rectangle · qualified on texts',d:'Trace 10 calls + 500 texts → premium here. AND logic would have refused.',tip:'One true anywhere is enough.'},
+{syms:['r2n','r2m'],b:['flow','Flow Line'],t:'NO + NO — escape',s:'Arrow · nothing triggered',d:'The ONLY path that pays nothing: failed calls AND failed texts. Rejoin and stop.',tip:'OR fails only when everything fails.'},
+{syms:['r3'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Exit lanes and merged paths all arrive at this one Stop.',tip:'Compare with the AND chart: same diamonds, opposite exits.'}]},
+switch:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The discount-code program begins.',tip:'One variable, many possible values.'},
+{syms:['r1'],b:['proc','Process'],t:"code = 'B'",s:'Rectangle · the value to test',d:"The deck sets code to 'B' before the switch. In a real program this would come from input.",tip:"Trace with 'B' in mind as you read down."},
+{syms:['r2'],b:['dec','Decision'],t:"code == 'A'?",s:'Diamond · first case',d:"Is the code 'A'? Our 'B' says NO, so fall through. A 'YES' would set 0.0 and break out right.",tip:'First match wins — order matters.'},
+{syms:['r2y','r2e'],b:['proc','Process'],t:'discount = 0.0',s:'Rectangle · the A branch',d:"Only reachable when code is 'A'. The break lane carries it right, out of the chain.",tip:'Without break it would fall INTO the next case.'},
+{syms:['r3'],b:['dec','Decision'],t:"code == 'B'?",s:'Diamond · second case',d:"Is the code 'B'? YES — our trace hits here → discount 0.1, then break out right.",tip:"This is where 'B' stops falling."},
+{syms:['r3y','r3e'],b:['proc','Process'],t:'discount = 0.1',s:'Rectangle · the B branch',d:'Discount 0.1 set, break lane exits right. Cases below never run.',tip:'Exactly one case body ever runs.'},
+{syms:['r4'],b:['dec','Decision'],t:"code == 'C'?",s:'Diamond · third case',d:"Only reached when code is neither A nor B. 'C' → 0.2 and out.",tip:'Each NO falls exactly one level.'},
+{syms:['r4y','r4e'],b:['proc','Process'],t:'discount = 0.2',s:'Rectangle · the C branch',d:"The 'C' outcome, with its own break exit.",tip:'Same shape as every other case.'},
+{syms:['r5'],b:['proc','Process'],t:'discount = 0.3 default',s:'Rectangle · catch-all',d:"Falling past every diamond lands here — e.g. code 'Z' → 0.3. Default needs no test and no break.",tip:'Default guarantees the variable always gets a value.'},
+{syms:['r6'],b:['io','Output'],t:'Output discount',s:'Parallelogram · show it',d:'One shared output prints whichever discount was set. Our trace prints 0.1.',tip:'After the chain there is one path again.'},
+{syms:['r7'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Break lanes and the main line all converge here.',tip:'Evaluate once, jump once, exit once.'}]},
+twoNum:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The two-number comparison begins.',tip:'Three possible answers, one program.'},
+{syms:['r1'],b:['io','Input'],t:'Output prompt + Input x, y',s:'Parallelograms · talk to the user',d:'First tell the user what to enter, then read both numbers. Prompt before input — always.',tip:'Never read input without prompting first.'},
+{syms:['r2'],b:['dec','Decision'],t:'x == y?',s:'Diamond 1 · equality first',d:'Are they equal? Checking equality FIRST means the rest only handles unequal numbers.',tip:'Test the special case before the general one.'},
+{syms:['r3','r3y','r3e'],b:['proc','Process'],t:'numbers are equal',s:'Rectangle · the equal branch',d:'TRUE → print equal → straight to Stop via the exit lane. Trace 5, 5 → equal.',tip:'Equal inputs never reach the second diamond.'},
+{syms:['r3n','r3m'],b:['flow','Flow Line'],t:'Not equal — keep going',s:'Arrow · fall through',d:'FALSE drops to the second diamond instead of exiting.',tip:'Fall-through, not out — like OR logic.'},
+{syms:['r4'],b:['dec','Decision'],t:'x < y?',s:'Diamond 2 · which is bigger',d:'With equality ruled out, one question remains: is x smaller? TRUE → second is greater; FALSE → first is greater.',tip:'Two diamonds cover all three outcomes.'},
+{syms:['r4y'],b:['proc','Process'],t:'second is greater',s:'Rectangle · x lost',d:'TRUE → the second number is greater. Trace 3, 8 → second greater.',tip:'Follow the green True arrow.'},
+{syms:['r4n','r4m'],b:['proc','Process'],t:'first is greater',s:'Rectangle · x won',d:'FALSE → the first number is greater, then merge. Trace 9, 2 → first greater.',tip:'The last remaining possibility.'},
+{syms:['r5'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Exit lane and merged path meet at the single Stop.',tip:'Equal, second-greater, first-greater — all roads end here.'}]},
+threeNum:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The sum-checker begins: does any two sum to the third?',tip:'Three suspects, three tests.'},
+{syms:['r1'],b:['io','Input'],t:'Input x, y, z',s:'Parallelogram · read three numbers',d:'Read all three values up front (after prompting).',tip:'Get all your data before deciding anything.'},
+{syms:['r2'],b:['dec','Decision'],t:'x + y == z?',s:'Diamond 1 · is z the sum?',d:'Do the first two sum to the third? YES → announce it and exit right.',tip:'Check one position at a time.'},
+{syms:['r2y','r2e'],b:['proc','Process'],t:'3rd = sum of first two',s:'Rectangle · z wins',d:'TRUE → "The 3rd number is equal to the sum of the first two" → Stop.',tip:'First YES ends the hunt.'},
+{syms:['r3'],b:['dec','Decision'],t:'x + z == y?',s:'Diamond 2 · is y the sum?',d:'NO above falls here. Same question, rotated: is the middle number the sum?',tip:'Each NO falls exactly one level.'},
+{syms:['r3y','r3e'],b:['proc','Process'],t:'2nd = sum of 1st + 3rd',s:'Rectangle · y wins',d:'TRUE → announce and exit right.',tip:'Same shape as every level.'},
+{syms:['r4'],b:['dec','Decision'],t:'y + z == x?',s:'Diamond 3 · is x the sum?',d:'Last chance: do the last two sum to the first?',tip:'By now two suspects are cleared.'},
+{syms:['r4y'],b:['proc','Process'],t:'1st = sum of 2nd + 3rd',s:'Rectangle · x wins',d:'TRUE → announce it. Trace 7, 2, 5: 7+2=9? no. 7+5=12? no. 2+5=7? YES → 1st equals sum of 2nd and 3rd.',tip:'Work the trace yourself before reading on.'},
+{syms:['r4n','r4m'],b:['flow','Flow Line'],t:'No match — quiet exit',s:'Arrow · nothing summed',d:'All three NO → drop to Stop with no message. The deck prints nothing in that case.',tip:'Not every path produces output.'},
+{syms:['r5'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Exit lanes and the quiet path converge here.',tip:'Three diamonds deep — the tallest chart in the unit.'}]},
+avg:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The grade-average assignment begins.',tip:'The rule: NOBODY averages unless everybody passes.'},
+{syms:['r1'],b:['io','Input'],t:'Enter + Input scores',s:'Parallelograms · get the data',d:'Prompt for three scores, then read English, Math and Science.',tip:'Prompt first, read second.'},
+{syms:['r2'],b:['dec','Decision'],t:'Eng≥75 AND Math≥75 AND Sci≥75?',s:'Diamond · one gate for all three',d:'A single diamond checks ALL three with AND. One failure anywhere makes the whole test false.',tip:'This is the AND from Lesson 4 doing real work.'},
+{syms:['r2y'],b:['proc','Process'],t:'Compute + print average',s:'Rectangles · the reward path',d:'TRUE → average = (Eng+Math+Sci)/3 → Output average. Trace 80, 85, 90 → 85.',tip:'The payoff for passing the gate.'},
+{syms:['r2n','r2m'],b:['flow','Flow Line'],t:'Someone failed — bypass',s:'Arrow · skip the math',d:'FALSE (e.g. 80, 70, 90 — Math fails) → skip both boxes, rejoin below. The deck prints "cannot proceed" on this path.',tip:'One red mark blocks everything.'},
+{syms:['r3'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Both outcomes — average printed or not — end here.',tip:'A gatekeeper diamond guarding precious work.'}]},
+rem:{steps:[
+{syms:['r0'],b:['term','Terminator'],t:'Start',s:'Rounded oval · the program begins',d:'The remainder-classifier begins. Hint from the deck: use Switch case.',tip:'Remainders 0, 1, 2, or "big" — four buckets.'},
+{syms:['r1'],b:['io','Input'],t:'Input x, y',s:'Parallelogram · read two numbers',d:'Read the dividend and divisor.',tip:'x gets divided by y.'},
+{syms:['r2'],b:['proc','Process'],t:'rem = x % y',s:'Rectangle · compute once',d:'Modulo runs ONCE up front; every diamond below just reads rem. That single evaluation is the whole point of switch.',tip:'Compute once, test many times.'},
+{syms:['r3'],b:['dec','Decision'],t:'rem == 0?',s:'Diamond · first case',d:'Remainder zero? YES → "The remainder is 0", break out right.',tip:'First match wins.'},
+{syms:['r3y','r3e'],b:['proc','Process'],t:'remainder is 0',s:'Rectangle · the 0 branch',d:'Exact hit on 0 → announce and exit via the break lane.',tip:'Break = stop falling.'},
+{syms:['r4'],b:['dec','Decision'],t:'rem == 1?',s:'Diamond · second case',d:'Fell through 0, now test 1. Trace 10, 3: rem = 1 → TRUE here.',tip:'Each NO falls exactly one level.'},
+{syms:['r4y','r4e'],b:['proc','Process'],t:'remainder is 1',s:'Rectangle · the 1 branch',d:'Announce 1, break out right.',tip:'Our trace stops here.'},
+{syms:['r5'],b:['dec','Decision'],t:'rem == 2?',s:'Diamond · third case',d:'Last test before the catch-all.',tip:'Only 0/1/2 get their own boxes.'},
+{syms:['r5y','r5e'],b:['proc','Process'],t:'remainder is 2',s:'Rectangle · the 2 branch',d:'Announce 2, break out right.',tip:'Same shape as its siblings.'},
+{syms:['r6'],b:['proc','Process'],t:'remainder greater than 2',s:'Rectangle · the default',d:'Fell past all three → "greater than 2". No test, no break needed.',tip:'Default catches everything else.'},
+{syms:['r7'],b:['term','Terminator'],t:'Stop',s:'Rounded oval · the program ends',d:'Break lanes and the main line converge at the single Stop.',tip:'A switch drawn as falling diamonds.'}]}
+};
+if(!window.__walkBound){window.__walkBound=1;document.addEventListener('click',e=>{
+ const g=e.target&&e.target.closest?e.target.closest('#lessonContent .flow-svg .sym'):null;
+ if(!g)return;
+ if(!document.getElementById('screen-lesson').classList.contains('show'))return;
+ const L=LESSONS[state.current];const s=L.slides[state.slide];
+ if(!s||!s.svg||!GUIDES[s.svg])return;
+ const ids=(g.dataset.r||'').split(' ');
+ const ix=GUIDES[s.svg].steps.findIndex(st=>st.syms.some(x=>ids.includes(x)));
+ if(ix>=0){state.walk=ix;renderWalk()}
+});}
 
 const FLOWS={
 if:{rows:[{k:'t',t:'Start',c:'green'},{k:'d',c:'boolean_expression',yl:'true',nl:'false',y:[{t:'statement'}],n:[]},{k:'t',t:'End',c:'red'}],
@@ -358,10 +523,11 @@ function renderPath(){const p=document.getElementById('path');p.innerHTML='';LES
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));document.getElementById(id).classList.add('show');document.getElementById('layout').classList.toggle('focus-mode',id==='screen-lesson'||id==='screen-quiz'||id==='screen-complete');document.getElementById('feedback').classList.remove('show');window.scrollTo(0,0)}
 function scrollPath(){show('screen-path')}
 function openLesson(i,at){state.current=i;state.slide=at||0;if(state.hearts<5)state.hearts=Math.min(5,state.hearts+1);show('screen-lesson');renderSlide();}
-function renderSlide(){const L=LESSONS[state.current];const s=L.slides[state.slide];const g=globalSlideIdx(),t=totalSlides();document.getElementById('lessonBar').style.width=(g/t*100)+'%';document.getElementById('lessonCount').textContent=g+' / '+t;document.getElementById('slideMeta').textContent=`Unit 4 • SLIDE ${g} OF ${t}`;document.getElementById('slideDots').innerHTML=L.slides.map((_,idx)=>`<div class="dot ${idx===state.slide?'on':''}"></div>`).join('');document.getElementById('lessonContent').innerHTML=`<div class="slide-title-row"><div class="slide-icon">${L.icon}</div><h1 class="slide-title">UNIT 4: CONDITIONAL STATEMENTS<br>— ${s.h}</h1></div><div class="doc-card"><p>${s.owl} ${s.text}</p>${s.code?`<div class="code">${s.code}</div>`:''}${s.svg?flowSVG(FLOWS[s.svg])+'<div class="walk"><div class="walk-head">🦉<b>Walk me through it — Duo explains</b></div><div class="walk-bubble" id="walkBubble"></div><div class="walk-nav"><button class="btn btn-outline walk-btn" onclick="walkNav(-1)">‹ BACK</button><div class="walk-dots" id="walkDots"></div><button class="btn btn-green walk-btn" onclick="walkNav(1)">NEXT ›</button></div></div>':''}${s.img?`<img class="flow-img" src="${s.img}" alt="Flowchart from Chapter 4 deck" loading="lazy"><div class="flow-cap">Flowchart from Chapter 4 deck — ${s.h}</div>`:''}<div class="check-row"><div class="check-badge">✓</div><div><b>${s.h}</b> — ${s.text}</div></div></div>`;const last=state.slide===L.slides.length-1;document.getElementById('slideBack').textContent=state.slide===0&&state.current===0?'EXIT':'BACK';document.getElementById('slideNext').textContent=last?(state.current===LESSONS.length-1?'TAKE BOSS QUIZ →':'NEXT LESSON →'):'CONTINUE';state.walk=0;renderWalk();updateTop();}
-function walkSteps(){const L=LESSONS[state.current];const s=L.slides[state.slide];return (s&&s.svg)?FLOWS[s.svg].how:[]}
-function renderWalk(){const steps=walkSteps();const b=document.getElementById('walkBubble');if(!b)return;if(state.walk==null)state.walk=0;state.walk=Math.max(0,Math.min(steps.length-1,state.walk));b.innerHTML='<b>Step '+(state.walk+1)+' of '+steps.length+'</b><br>'+steps[state.walk];const d=document.getElementById('walkDots');if(d)d.innerHTML=steps.map((_,i)=>'<div class="dot '+(i===state.walk?'on':'')+'"></div>').join('')}
-function walkNav(d){const steps=walkSteps();if(!steps.length)return;state.walk=Math.min(steps.length-1,Math.max(0,(state.walk||0)+d));renderWalk();updateTop();}
+function renderSlide(){const L=LESSONS[state.current];const s=L.slides[state.slide];const g=globalSlideIdx(),t=totalSlides();document.getElementById('lessonBar').style.width=(g/t*100)+'%';document.getElementById('lessonCount').textContent=g+' / '+t;document.getElementById('slideMeta').textContent=`Unit 4 • SLIDE ${g} OF ${t}`;document.getElementById('slideDots').innerHTML=L.slides.map((_,idx)=>`<div class="dot ${idx===state.slide?'on':''}"></div>`).join('');document.getElementById('lessonContent').innerHTML=`<div class="slide-title-row"><div class="slide-icon">${L.icon}</div><h1 class="slide-title">UNIT 4: CONDITIONAL STATEMENTS<br>— ${s.h}</h1></div><div class="doc-card"><p>${s.owl} ${s.text}</p>${s.code?`<div class="code">${s.code}</div>`:''}${s.svg?flowSVG(FLOWS[s.svg])+'<div class="walk"><div class="walk-head">🦉<b>Walk me through it — tap any symbol too</b></div><div class="winfo" id="walkInfo"></div><div class="walk-nav"><button class="btn btn-outline walk-btn" onclick="walkNav(-1)">‹ BACK</button><div class="walk-dots" id="walkDots"></div><button class="btn btn-green walk-btn" onclick="walkNav(1)">NEXT ›</button></div></div>':''}${s.img?`<img class="flow-img" src="${s.img}" alt="Flowchart from Chapter 4 deck" loading="lazy"><div class="flow-cap">Flowchart from Chapter 4 deck — ${s.h}</div>`:''}<div class="check-row"><div class="check-badge">✓</div><div><b>${s.h}</b> — ${s.text}</div></div></div>`;const last=state.slide===L.slides.length-1;document.getElementById('slideBack').textContent=state.slide===0&&state.current===0?'EXIT':'BACK';document.getElementById('slideNext').textContent=last?(state.current===LESSONS.length-1?'TAKE BOSS QUIZ →':'NEXT LESSON →'):'CONTINUE';state.walk=0;renderWalk();updateTop();}
+function walkSvgId(){const L=LESSONS[state.current];const s=L.slides[state.slide];return (s&&s.svg&&typeof GUIDES!=='undefined'&&GUIDES[s.svg])?s.svg:null}
+function walkSteps(){const id=walkSvgId();return id?GUIDES[id].steps:[]}
+function renderWalk(){const id=walkSvgId();const steps=walkSteps();const box=document.getElementById('walkInfo');if(!box||!id||!steps.length)return;if(state.walk==null)state.walk=0;state.walk=Math.max(0,Math.min(steps.length-1,state.walk));const st=steps[state.walk];const bc=st.b;box.innerHTML='<div class="wtop"><span class="wbadge '+bc[0]+'"><span class="wdot"></span>'+bc[1]+'</span><span class="wcount">STEP '+(state.walk+1)+' / '+steps.length+'</span></div><h4>'+st.t+'</h4><div class="wsub">'+st.s+'</div><p>'+st.d+'</p><div class="wtip">💡 '+st.tip+'</div>';const d=document.getElementById('walkDots');if(d)d.innerHTML=steps.map((_,i)=>'<div class="dot '+(i===state.walk?'on':'')+'"></div>').join('');const svg=document.querySelector('#lessonContent .flow-svg');if(svg){svg.classList.add('focusing');svg.querySelectorAll('.sym').forEach(g=>{const ids=(g.dataset.r||'').split(' ');g.classList.toggle('active',ids.some(x=>st.syms.indexOf(x)>=0))})}}
+function walkNav(d){const steps=walkSteps();if(!steps.length)return;state.walk=Math.min(steps.length-1,Math.max(0,(state.walk||0)+d));renderWalk();}
 function slideNav(d){const L=LESSONS[state.current];const ns=state.slide+d;
 if(ns<0){if(state.current>0)openLesson(state.current-1,LESSONS[state.current-1].slides.length-1);else show('screen-path');return}
 if(ns>=L.slides.length){
